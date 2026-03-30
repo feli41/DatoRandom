@@ -1,103 +1,574 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dato Random AI Publisher</title>
   <style>
     * { box-sizing: border-box; }
+
+    :root {
+      --bg1: #0f172a;
+      --bg2: #111827;
+      --bg3: #1e293b;
+      --card: rgba(15, 23, 42, 0.88);
+      --border: rgba(255,255,255,0.10);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --soft: #94a3b8;
+      --blue: #38bdf8;
+      --blue2: #2563eb;
+      --green: #22c55e;
+      --shadow: 0 24px 70px rgba(0,0,0,0.35);
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
-      color: #f8fafc;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(37,99,235,0.15), transparent 25%),
+        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+      color: var(--text);
       min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 44px;
+    }
+
+    .topbar {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
     }
-    .card {
-      max-width: 780px;
-      width: 100%;
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 24px;
-      padding: 40px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-      backdrop-filter: blur(8px);
-    }
+
     .badge {
       display: inline-block;
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(56, 189, 248, 0.14);
       color: #7dd3fc;
       padding: 8px 14px;
       border-radius: 999px;
-      font-size: 14px;
-      margin-bottom: 18px;
-    }
-    h1 {
-      font-size: 42px;
-      line-height: 1.1;
-      margin: 0 0 16px;
-    }
-    p {
-      font-size: 18px;
-      line-height: 1.7;
-      color: #cbd5e1;
-      margin: 0 0 16px;
-    }
-    .links {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-top: 28px;
-    }
-    .btn {
-      text-decoration: none;
-      color: white;
-      background: linear-gradient(135deg, #38bdf8, #2563eb);
-      padding: 14px 20px;
-      border-radius: 14px;
+      font-size: 13px;
       font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn, .status-pill {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+    }
+
+    .lang-btn {
+      cursor: pointer;
+      color: white;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .mini-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--soft);
+      margin-bottom: 8px;
+    }
+
+    .mini-value {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
       transition: transform .15s ease, opacity .15s ease;
     }
-    .btn.secondary {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #e2e8f0;
-    }
+
     .btn:hover {
       transform: translateY(-2px);
-      opacity: 0.95;
+      opacity: 0.96;
     }
-    .footer {
-      margin-top: 28px;
+
+    .btn.primary {
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+    }
+
+    .btn.secondary {
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+    }
+
+    .btn.publish {
+      width: 100%;
+      margin-top: 18px;
+      color: white;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: .55;
+      transform: none;
+    }
+
+    .field {
+      margin-top: 18px;
+    }
+
+    .field label {
+      display: block;
       font-size: 14px;
-      color: #94a3b8;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px dashed rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 14px;
+      color: var(--muted);
+    }
+
+    .preview-box {
+      margin-top: 18px;
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: 20px;
+      min-height: 320px;
+      background: rgba(255,255,255,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .preview-placeholder {
+      text-align: center;
+      max-width: 380px;
+      color: var(--soft);
+      line-height: 1.7;
+    }
+
+    video {
+      max-width: 100%;
+      max-height: 500px;
+      border-radius: 18px;
+      display: none;
+      background: black;
+    }
+
+    .checkbox-card {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(56, 189, 248, 0.10);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      color: #bae6fd;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .success {
+      margin-top: 16px;
+      display: none;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.22);
+      color: #bbf7d0;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: var(--soft);
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #7dd3fc;
+      text-decoration: none;
+      margin-right: 12px;
+    }
+
+    @media (max-width: 930px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+
+      .preview-box {
+        min-height: 240px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="badge">AI Publishing Tool</div>
-    <h1>Dato Random AI Publisher</h1>
-    <p>
-      Dato Random AI Publisher is a web tool for preparing and publishing short-form
-      curiosity, facts, and educational videos for social media platforms.
-    </p>
-    <p>
-      The app helps creators review video content, captions, and settings before publication.
-    </p>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="badge" data-es="Flujo IA + TikTok" data-en="AI + TikTok Workflow">Flujo IA + TikTok</div>
+        <h1>Dato Random AI Publisher</h1>
+        <p class="subtitle" data-es="Panel para revisar y publicar videos generados con IA." data-en="Dashboard to review and publish AI-generated videos.">
+          Panel para revisar y publicar videos generados con IA.
+        </p>
+      </div>
 
-    <div class="links">
-      <a class="btn" href="privacy.html">Privacy Policy</a>
-      <a class="btn secondary" href="terms.html">Terms of Service</a>
+      <div class="top-actions">
+        <button class="lang-btn" id="langToggle">English</button>
+        <div class="status-pill" id="connectionStatus">TikTok no conectado</div>
+      </div>
     </div>
 
-    <div class="footer">
-      Contact: canal.datorandom@gmail.com
+    <div class="grid">
+      <section class="card">
+        <h2 data-es="1. Conecta tu cuenta de TikTok" data-en="1. Connect your TikTok account">1. Conecta tu cuenta de TikTok</h2>
+        <p class="muted" data-es="Esta página sirve para revisar el contenido antes de publicarlo." data-en="This page is used to review content before posting it.">
+          Esta página sirve para revisar el contenido antes de publicarlo.
+        </p>
+
+        <div class="mini-grid">
+          <div class="mini-card">
+            <div class="mini-label" data-es="Cuenta conectada" data-en="Connected account">Cuenta conectada</div>
+            <div class="mini-value" id="creatorNickname">No conectado</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label" data-es="Modo de cuenta" data-en="Account mode">Modo de cuenta</div>
+            <div class="mini-value" id="accountMode">Modo privado de revisión</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="connectBtn" data-es="Conectar TikTok" data-en="Connect TikTok">Conectar TikTok</button>
+          <button class="btn secondary" id="demoConnectBtn" data-es="Modo demo" data-en="Demo mode">Modo demo</button>
+        </div>
+
+        <div class="note" data-es="La IA puede generar el video automáticamente y n8n puede guardarlo en un servidor. Esta página sirve como paso final de revisión antes de enviarlo a TikTok." data-en="AI can generate the video automatically and n8n can store it on a server. This page acts as the final review step before sending it to TikTok.">
+          La IA puede generar el video automáticamente y n8n puede guardarlo en un servidor. Esta página sirve como paso final de revisión antes de enviarlo a TikTok.
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2 data-es="¿Para qué sirve esta página?" data-en="What is this page for?">¿Para qué sirve esta página?</h2>
+        <p class="muted" data-es="No es una página pública de videos. Es un panel interno para revisar, aprobar y publicar contenido generado por IA." data-en="This is not a public video page. It is an internal panel to review, approve, and publish AI-generated content.">
+          No es una página pública de videos. Es un panel interno para revisar, aprobar y publicar contenido generado por IA.
+        </p>
+      </aside>
     </div>
+
+    <div style="height:22px"></div>
+
+    <section class="card">
+      <h2 data-es="2. Revisar antes de publicar" data-en="2. Review before publishing">2. Revisar antes de publicar</h2>
+
+      <div class="grid">
+        <div>
+          <div class="field">
+            <label for="videoFile" data-es="Archivo de video" data-en="Video file">Archivo de video</label>
+            <input type="file" id="videoFile" accept="video/mp4,video/quicktime,video/*">
+          </div>
+
+          <div class="preview-box">
+            <div class="preview-placeholder" id="previewPlaceholder" data-es="Aún no has seleccionado un video. Aquí se mostrará la vista previa del video generado por IA." data-en="No video selected yet. The AI-generated video preview will appear here.">
+              Aún no has seleccionado un video. Aquí se mostrará la vista previa del video generado por IA.
+            </div>
+            <video id="videoPreview" controls playsinline></video>
+          </div>
+        </div>
+
+        <div>
+          <div class="field">
+            <label for="caption" data-es="Descripción" data-en="Caption">Descripción</label>
+            <textarea id="caption">¿Sabías que los pulpos tienen tres corazones? #DatoRandom #Curiosidades #TikTokFacts</textarea>
+          </div>
+
+          <div class="field">
+            <label for="privacy" data-es="Privacidad" data-en="Privacy">Privacidad</label>
+            <select id="privacy">
+              <option value="SELF_ONLY">SELF_ONLY</option>
+              <option value="FOLLOWER_OF_CREATOR">FOLLOWER_OF_CREATOR</option>
+              <option value="MUTUAL_FOLLOW_FRIENDS">MUTUAL_FOLLOW_FRIENDS</option>
+              <option value="PUBLIC_TO_EVERYONE">PUBLIC_TO_EVERYONE</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="destinationAccount" data-es="Cuenta destino" data-en="Destination account">Cuenta destino</label>
+            <input type="text" id="destinationAccount" value="@datorandom_ai" readonly>
+          </div>
+
+          <div class="checkbox-card">
+            <div class="checkbox-row">
+              <input type="checkbox" id="consent">
+              <label for="consent" id="consentText">
+                Revisé este contenido y autorizo su publicación en TikTok.
+              </label>
+            </div>
+          </div>
+
+          <button class="btn publish" id="publishBtn" disabled data-es="Publicar en TikTok" data-en="Publish to TikTok">
+            Publicar en TikTok
+          </button>
+
+          <div class="success" id="successMessage">
+            Contenido aprobado y listo para enviarse a TikTok.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+        </div>
+        <div>canal.datorandom@gmail.com</div>
+      </div>
+    </section>
   </div>
+
+  <script>
+    const langToggle = document.getElementById('langToggle');
+    const connectBtn = document.getElementById('connectBtn');
+    const demoConnectBtn = document.getElementById('demoConnectBtn');
+    const connectionStatus = document.getElementById('connectionStatus');
+    const creatorNickname = document.getElementById('creatorNickname');
+    const accountMode = document.getElementById('accountMode');
+    const destinationAccount = document.getElementById('destinationAccount');
+
+    const videoFile = document.getElementById('videoFile');
+    const videoPreview = document.getElementById('videoPreview');
+    const previewPlaceholder = document.getElementById('previewPlaceholder');
+    const consent = document.getElementById('consent');
+    const consentText = document.getElementById('consentText');
+    const publishBtn = document.getElementById('publishBtn');
+    const successMessage = document.getElementById('successMessage');
+
+    let isConnected = false;
+    let hasVideo = false;
+    let currentLang = 'es';
+
+    function t(es, en) {
+      return currentLang === 'es' ? es : en;
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLang;
+
+      document.querySelectorAll('[data-es]').forEach(el => {
+        el.textContent = currentLang === 'es' ? el.dataset.es : el.dataset.en;
+      });
+
+      langToggle.textContent = currentLang === 'es' ? 'English' : 'Español';
+
+      if (!isConnected) {
+        connectionStatus.textContent = t('TikTok no conectado', 'TikTok not connected');
+        creatorNickname.textContent = t('No conectado', 'Not connected');
+      } else {
+        connectionStatus.textContent = t('TikTok conectado', 'TikTok connected');
+        creatorNickname.textContent = 'Dato Random AI';
+      }
+
+      accountMode.textContent = t('Modo privado de revisión', 'Private review mode');
+      consentText.textContent = t(
+        'Revisé este contenido y autorizo su publicación en TikTok.',
+        'I reviewed this content and approve posting it to TikTok.'
+      );
+
+      if (successMessage.style.display === 'block') {
+        successMessage.textContent = t(
+          'Contenido aprobado y listo para enviarse a TikTok.',
+          'Content approved and ready to be sent to TikTok.'
+        );
+      }
+    }
+
+    function updatePublishState() {
+      publishBtn.disabled = !(isConnected && hasVideo && consent.checked);
+    }
+
+    langToggle.addEventListener('click', () => {
+      currentLang = currentLang === 'es' ? 'en' : 'es';
+      applyLanguage();
+    });
+
+    demoConnectBtn.addEventListener('click', () => {
+      isConnected = true;
+      creatorNickname.textContent = 'Dato Random AI';
+      destinationAccount.value = '@datorandom_ai';
+      connectionStatus.textContent = t('TikTok conectado', 'TikTok connected');
+      updatePublishState();
+    });
+
+    connectBtn.addEventListener('click', () => {
+      alert(t(
+        'Aquí después irá tu login real con TikTok.',
+        'Your real TikTok login will go here later.'
+      ));
+    });
+
+    videoFile.addEventListener('change', () => {
+      const file = videoFile.files[0];
+
+      if (!file) {
+        hasVideo = false;
+        videoPreview.style.display = 'none';
+        videoPreview.removeAttribute('src');
+        previewPlaceholder.style.display = 'block';
+        updatePublishState();
+        return;
+      }
+
+      const fileUrl = URL.createObjectURL(file);
+      videoPreview.src = fileUrl;
+      videoPreview.style.display = 'block';
+      previewPlaceholder.style.display = 'none';
+      hasVideo = true;
+      successMessage.style.display = 'none';
+      updatePublishState();
+    });
+
+    consent.addEventListener('change', updatePublishState);
+
+    publishBtn.addEventListener('click', () => {
+      successMessage.textContent = t(
+        'Contenido aprobado y listo para enviarse a TikTok.',
+        'Content approved and ready to be sent to TikTok.'
+      );
+      successMessage.style.display = 'block';
+      successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    applyLanguage();
+  </script>
 </body>
 </html>
